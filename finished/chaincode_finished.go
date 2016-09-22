@@ -116,5 +116,5 @@ func (t *SimpleChaincode) read(stub *shim.ChaincodeStub, args []string) ([]byte,
 		return nil, errors.New(jsonResp)
 	}
 
-	return "MY" + valAsbytes, nil
+	return valAsbytes, nil
 }
