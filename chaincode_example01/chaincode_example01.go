@@ -172,7 +172,7 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 		return nil, errors.New(jsonResp)
 	}
 
-	isSE, err1 := stub.VerifyAttribute("position", []byte("Software Engineer"))
+	//isSE, err1 := stub.VerifyAttribute("position", []byte("Software Engineer"))
 	//stub.VerifySignature()
 	cert, err1 := stub.GetCallerCertificate()
 	meta, err1:= stub.GetCallerMetadata()
@@ -181,9 +181,8 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 		//return nil, errors.New(err)
 	}
 
-	jsonResp := "{\"Name\":\"" + A + "\",\"Amount\":\"" + string(Avalbytes) + "\"}"
-	jsonResp2 := " isSE " + string(isSE) + " CERT " + string(cert) + " META " + string(meta)
-	jsonResp = jsonResp + jsonResp2
+	jsonResp := "{\"Name\":\"" + A + "\",\"Amount\":\"" + string(Avalbytes) + "\"}" + " CERT " + string(cert) + " META " + string(meta)
+	//jsonResp2 := " isSE " + string(isSE) + " CERT " + string(cert) + " META " + string(meta)
 
 	fmt.Printf("Query Response:%s\n", jsonResp)
 	//return Avalbytes, nil
