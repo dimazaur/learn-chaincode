@@ -182,7 +182,7 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 	}
 
 	jsonResp := "{\"Name\":\"" + A + "\",\"Amount\":\"" + string(Avalbytes) + "\"}"
-	jsonResp2 := " isSE " + isSE + " CERT " + string(cert) + " META " + string(meta)
+	jsonResp2 := " isSE " + string(isSE) + " CERT " + string(cert) + " META " + string(meta)
 	jsonResp = jsonResp + jsonResp2
 
 	fmt.Printf("Query Response:%s\n", jsonResp)
