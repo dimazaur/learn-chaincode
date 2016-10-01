@@ -183,8 +183,10 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 		return nil, errors.New("Error with Metadata 222")
 	}
 
-	jsonResp := "{\"Name\":\"" + A + "\",\"Amount\":\"" + string(Avalbytes) + "\"}" + " CERT " + string(cert) + " META " + string(meta)
-	//jsonResp2 := " isSE " + string(isSE) + " CERT " + string(cert) + " META " + string(meta)
+	jsonResp := "{\"Name\":\"" + A + "\",\"Amount\":\"" + string(Avalbytes) + "\"}"
+
+	fmt.Print("CERT:", string(cert))
+	fmt.Print("META:", string(meta))
 
 	fmt.Printf("Query Response:%s\n", jsonResp)
 	//return Avalbytes, nil
