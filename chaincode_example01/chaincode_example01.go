@@ -175,10 +175,12 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 	//isSE, err1 := stub.VerifyAttribute("position", []byte("Software Engineer"))
 	//stub.VerifySignature()
 	cert, err1 := stub.GetCallerCertificate()
-	meta, err1:= stub.GetCallerMetadata()
-
 	if err1!= nil {
-		//return nil, errors.New(err)
+		return nil, errors.New(err1)
+	}
+	meta, err2:= stub.GetCallerMetadata()
+	if err2!= nil {
+		return nil, errors.New(err2)
 	}
 
 	jsonResp := "{\"Name\":\"" + A + "\",\"Amount\":\"" + string(Avalbytes) + "\"}" + " CERT " + string(cert) + " META " + string(meta)
