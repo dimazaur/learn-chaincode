@@ -176,11 +176,11 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 	//stub.VerifySignature()
 	cert, err1 := stub.GetCallerCertificate()
 	if err1!= nil {
-		return nil, errors.New(err1)
+		return nil, errors.New("Error with Certificate 111")
 	}
 	meta, err2:= stub.GetCallerMetadata()
 	if err2!= nil {
-		return nil, errors.New(err2)
+		return nil, errors.New("Error with Metadata 222")
 	}
 
 	jsonResp := "{\"Name\":\"" + A + "\",\"Amount\":\"" + string(Avalbytes) + "\"}" + " CERT " + string(cert) + " META " + string(meta)
