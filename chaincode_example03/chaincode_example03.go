@@ -30,9 +30,9 @@ type SimpleChaincode struct {
 }
 
 // Init takes a string and int. These are stored as a key/value pair in the state
-func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
-	var A string // Entity
-	var Aval int // Asset holding
+func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+	var A, Aval string // Entity
+	var X int // Asset holding
 	var err error
 
 	if len(args) != 2 {
@@ -41,7 +41,8 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 
 	// Initialize the chaincode
 	A = args[0]
-	Aval, err = strconv.Atoi(args[1])
+	Aval = args[1]
+	X, err = strconv.Atoi(Aval)
 	if err != nil {
 		return nil, errors.New("Expecting integer value for asset holding")
 	}
@@ -57,17 +58,18 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 }
 
 // Invoke is a no-op
-func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	if len(args) != 2 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 3")
 	}
 
-	var A string
+	var A, Aval string
 	var X int
 	var err error
 
 	A = args[0]
-	X, err = strconv.Atoi(args[1])
+	Aval = args[1]
+	X, err = strconv.Atoi(Aval)
 	if err != nil {
 		return nil, errors.New("Invalid transaction amount, expecting a integer value")
 	}
@@ -81,12 +83,12 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 }
 
 // Query callback representing the query of a chaincode
-func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	if function != "query" {
 		return nil, errors.New("Invalid query function name. Expecting \"query\"")
 	}
 	var A string // Entity
-	var X string // Asset holding
+	//var X string // Asset holding
 	var err error
 
 	if len(args) != 1 {
@@ -95,13 +97,17 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 
 	A = args[0]
 
-	X, err = stub.GetState(A)
+	Avalbytes, err := stub.GetState(A)
 	if err != nil {
 		jsonResp := "{\"Error\":\"Failed to get state for " + A + "\"}"
 		return nil, errors.New(jsonResp)
 	}
+	if Avalbytes == nil {
+		return nil, errors.New("Entity not found")
+	}
+	//X, err = strconv.Atoi(string(Avalbytes))
 
-	jsonResp := "{\"Name\":\"" + A + "\",\"Amount\":\"" + X + "\"}"
+	jsonResp := "{\"Name\":\"" + A + "\",\"Amount\":\"" + Avalbytes + "\"}"
 	return []byte(jsonResp), nil
 }
 
