@@ -18,6 +18,7 @@ limitations under the License.
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"strconv"
@@ -31,6 +32,9 @@ type SimpleChaincode struct {
 
 // Init takes a string and int. These are stored as a key/value pair in the state
 func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+	bolB, _ := json.Marshal(true)
+	fmt.Println(string(bolB))
+
 	var A, Aval string // Entity
 	var X int // Asset holding
 	var err error
