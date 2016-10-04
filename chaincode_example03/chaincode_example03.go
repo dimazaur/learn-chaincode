@@ -49,7 +49,7 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 	fmt.Printf("Aval = %d\n", Aval)
 
 	// Write the state to the ledger - this put is legal within Run
-	err = stub.PutState(A, []byte(strconv.Itoa(Aval)))
+	err = stub.PutState(A, []byte(strconv.Itoa(X)))
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +107,7 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 	}
 	//X, err = strconv.Atoi(string(Avalbytes))
 
-	jsonResp := "{\"Name\":\"" + A + "\",\"Amount\":\"" + Avalbytes + "\"}"
+	jsonResp := "{\"Name\":\"" + A + "\",\"Amount\":\"" + string(Avalbytes) + "\"}"
 	return []byte(jsonResp), nil
 }
 
